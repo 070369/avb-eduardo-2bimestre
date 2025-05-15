@@ -1,22 +1,27 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function Detalhes() {
-  const { id } = useParams();
-  const [post, setPost] = useState({});
+  const { state } = useLocation();
+  const user = state?.user;
 
-  useEffect(() => {
-    axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
-      .then(res => setPost(res.data))
-      .catch(err => console.error("Erro ao buscar post:", err));
-  }, [id]);
+  if (!user) {
+    return <p style={{ padding: "2rem", color: "red" }}>Usuário não encontrado.</p>;
+  }
 
   return (
-    <div style={{ maxWidth: "800px", margin: "2rem auto", padding: "1rem", fontFamily: "sans-serif" }}>
-      <h2 style={{ marginBottom: "1rem" }}>Detalhes do Post</h2>
-      <p><strong>Título:</strong> {post.title}</p>
-      <p><strong>Conteúdo:</strong> {post.body}</p>
+    <div style={{ maxWidth: "600px", margin: "2rem auto", padding: "2rem", border: "1px solid #ddd", borderRadius: "12px", boxShadow: "0 0 10px rgba(0,0,0,0.1)", fontFamily: "sans-serif" }}>
+      <div style={{ textAlign: "center" }}>
+        <img
+          src={user.picture.large}
+          alt={user.name.first}
+          style={{ width: "150px", borderRadius: "50%", marginBottom: "1rem" }}
+        />
+        <h2>{user.name.first} {user.name.last}</h2>
+        <p><strong>Email:</strong> {user.email}</p>
+        <p><strong>Telefone:</strong> {user.phone}</p>
+        <p><strong>País:</strong> {user.location.country}</p>
+        <p><strong>Data de Nascimento:</strong> {new Date(user.dob.date).toLocaleDateString()}</p>
+      </div>
     </div>
   );
 }
