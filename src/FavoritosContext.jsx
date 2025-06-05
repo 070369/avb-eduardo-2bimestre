@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 
 export const FavoritosContext = createContext();
 
-export default function FavoritosProvider({ children }) {
+export function FavoritosProvider({ children }) {
   const [favoritos, setFavoritos] = useState([]);
 
   function adicionarFavorito(usuario) {
@@ -25,3 +25,4 @@ export default function FavoritosProvider({ children }) {
     </FavoritosContext.Provider>
   );
 }
+
